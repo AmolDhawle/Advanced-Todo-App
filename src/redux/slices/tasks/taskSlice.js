@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const loadTasksFromLocalStorage = () => {
+    try {
+      const serializedTasks = localStorage.getItem('tasks');
+      return serializedTasks ? JSON.parse(serializedTasks) : [];
+    } catch (e) {
+      console.error("Could not load tasks from localStorage", e);
+      return [];
+    }
+  };
 
 const saveTasksToLocalStorage = (tasks) => {
     try {
@@ -12,7 +21,7 @@ const saveTasksToLocalStorage = (tasks) => {
   
   // Initial state for the task slice, with an empty tasks array
 const initialState = {
-  tasks: []
+    tasks: loadTasksFromLocalStorage()
 };
 
 
@@ -27,8 +36,21 @@ const taskSlice = createSlice({
         saveTasksToLocalStorage(state.tasks);   // Save updated tasks array to localStorage
     
     },
+    // Edits an existing task in the state and saves the updated tasks array to localStorage.
+    editTask: (state, action) => {
+        const index = state.tasks.findIndex(task => task.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+          saveTasksToLocalStorage(state.tasks);
+        }
+      },
+      // Deletes a task from the state and saves the updated tasks array to localStorage.
+      deleteTask: (state, action) => {
+        state.tasks = state.tasks.filter(task => task.id !== action.payload);
+        saveTasksToLocalStorage(state.tasks);
+      }
   }
 });
 
-export const { addTask } = taskSlice.actions;
+export const { addTask, editTask, deleteTask } = taskSlice.actions;
 export default taskSlice.reducer;

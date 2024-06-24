@@ -1,27 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const AddTaskModal = ({ isOpen, closeModal, addTask }) => {
+const AddTaskModal = ({ isOpen, closeModal, addTask, task }) => {
   const [taskName, setTaskName] = useState('');
   const [priority, setPriority] = useState('low');
   const [location, setLocation] = useState('');
 
+  // This effect runs whenever the `task` prop changes.
+  useEffect(() => {
+    if (task) {
+      setTaskName(task.taskName || '');
+      setPriority(task.priority || 'low');
+      setLocation(task.location || '');
+    } else {
+      setTaskName('');
+      setPriority('low');
+      setLocation('');
+    }
+  }, [task]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask({ taskName, priority, location });  // Calls the addTask function with the new task data
-    // reset the input fields
-    setTaskName('');
-    setPriority('low');
-    setLocation('');
-    closeModal();   // Closes the modal
+
+    // Create an updatedTask object based on the current state values
+    const updatedTask = {
+      id: task ? task.id : Date.now(), // Use the existing task id or generate a new one
+      taskName: taskName,                  // Use the current task name
+      priority: priority,              // Use the current task priority
+      location: location               // Use the current task location
+    };
+
+    addTask(updatedTask);
+    closeModal();
   };
 
-// If the modal is not open, return null to render nothing
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded shadow-md w-1/3">
-        <h2 className="mb-4 text-xl">Add Task</h2>
+        <h2 className="text-xl mb-4">{task ? 'Edit Task' : 'Add Task'}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-1">Task Name</label>
@@ -59,7 +76,7 @@ const AddTaskModal = ({ isOpen, closeModal, addTask }) => {
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded"
           >
-            Submit
+            {task ? 'Update Task' : 'Add Task'}
           </button>
         </form>
         <button
