@@ -1,31 +1,39 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWeather } from '../../redux/slices/weather/weatherSlice';
+import { getWeatherImage } from '../../utils/weatherImages';
 
-const WeatherInfo = ({ location }) => {
+const WeatherInfo = ({ taskId, location }) => {
   const dispatch = useDispatch();
-  const weather = useSelector(state => state.weather.data);
-  const status = useSelector(state => state.weather.status);
-  const error = useSelector(state => state.weather.error);
+  const weatherInfo = useSelector(state => state.weather.weatherData[taskId]);
+  const status = weatherInfo ? weatherInfo.status : 'idle';
+  const error = weatherInfo ? weatherInfo.error : null;
 
   useEffect(() => {
-    if (location) {
-      dispatch(fetchWeather(location));
+    // Fetch weather data if location or taskId changes
+    if (location && taskId && (!weatherInfo || weatherInfo.data?.name !== location)) {
+      dispatch(fetchWeather({ location, taskId }));
     }
-  }, [location, dispatch]);
+  }, [location, taskId, dispatch, weatherInfo]);
 
-  if (!location) return null;
+  if (!location || !taskId) return null;
+
   if (status === 'loading') return <p>Loading weather...</p>;
   if (error) return <p>Error fetching weather: {error}</p>;
+  if (!weatherInfo || !weatherInfo.data || !weatherInfo.data.weather || !weatherInfo.data.weather[0]) {
+    return <p>No weather data available</p>;
+  }
+
+  const weatherCondition = weatherInfo.data.weather[0].main;
+  const weatherImage = getWeatherImage(weatherCondition);
 
   return (
-    <div>
-      {weather ? (
-        <div>
-          <p>Temp: {weather.main.temp}°C</p>
-          <p>Condition: {weather.weather[0].description}</p>
-        </div>
-      ) : null}
+    <div className="flex items-center">
+      <img src={weatherImage} alt={weatherCondition} className="w-8 h-8 mr-2" />
+      <div>
+        <div>{weatherCondition}</div>
+        <div>{weatherInfo.data.main.temp}°C</div>
+      </div>
     </div>
   );
 };

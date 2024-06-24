@@ -24,9 +24,9 @@ const AddTaskModal = ({ isOpen, closeModal, addTask, task }) => {
     // Create an updatedTask object based on the current state values
     const updatedTask = {
       id: task ? task.id : Date.now(), // Use the existing task id or generate a new one
-      taskName: taskName,                  // Use the current task name
-      priority: priority,              // Use the current task priority
-      location: location               // Use the current task location
+      taskName: taskName,  // Use the current task name
+      priority: priority,  // Use the current task priority
+      location: location   // Use the current task location
     };
 
     addTask(updatedTask);

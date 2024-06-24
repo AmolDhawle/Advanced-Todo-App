@@ -1,43 +1,49 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Async thunk to fetch weather data based on the given location.
+const initialState = {
+  weatherData: {} // Initialize weatherData as an empty object
+};
+
 export const fetchWeather = createAsyncThunk(
   'weather/fetchWeather',
-  async (location) => {
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+  async ({ location, taskId }) => {
+    try {
+      const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
         params: {
           q: location,
-          appid: 'a26f92e3d41d35d567e5cef25db35f25',    // API key for OpenWeatherMap
-          units: 'metric'   // Units of measurement (metric)
+          appid: 'a26f92e3d41d35d567e5cef25db35f25',
+          units: 'metric'
         }
       });
-    return response.data;
+      return { taskId, data: response.data };
+    } catch (error) {
+      throw new Error('Failed to fetch weather data');
+    }
   }
 );
 
-// Weather slice for managing weather data in the Redux store.
 const weatherSlice = createSlice({
   name: 'weather',
-  initialState: {
-    data: null, // Stores the weather data
-    error: null,    // Stores any error messages
-    status: 'idle'  // Represents the current status ('idle', 'loading', 'succeeded', 'failed')
-  },
-  extraReducers: (builder) => {
+  initialState,
+  reducers: {},
+  extraReducers: builder => {
     builder
-      .addCase(fetchWeather.pending, (state) => {
-        state.status = 'loading';   // Set status to loading when the fetchWeather thunk is pending
+    .addCase(fetchWeather.pending, (state) => {
+        state.status = 'loading'; // Set status to loading when the fetchWeather thunk is pending
       })
       .addCase(fetchWeather.fulfilled, (state, action) => {
-        state.status = 'succeeded';  // Set status to succeeded when the fetchWeather thunk is fulfilled
-        state.data = action.payload;  
-        state.error = null; 
+        const { taskId, data } = action.payload;
+        state.weatherData[taskId] = {
+          data, // weather data on success
+          status: 'succeeded',  // Set status to succeeded when the fetchWeather thunk is fulfilled
+          error: null
+        };
       })
       .addCase(fetchWeather.rejected, (state, action) => {
-        state.status = 'failed';    // Set status to failed when the fetchWeather thunk is rejected
-        state.data = null;
-        state.error = action.error.message;
+        state.status = 'failed'; // Set status to failed when the fetchWeather thunk is rejected
+        state.data = null; // Clear weather data on failure
+        state.error = action.error.message; // Store the error message
       });
   }
 });

@@ -8,7 +8,8 @@ const TaskItem = ({ task, openModal, handleDelete }) => {
         <h3 className="text-lg font-bold">{task.taskName}</h3>
         <p>Priority: {task.priority}</p>
         {task.location && <p>Location: {task.location}</p>}
-        {task.location && <WeatherInfo location={task.location} />}
+        {task.location && <WeatherInfo taskId={task.id}  location={task.location} />}
+
       </div>
       <div>
         <button
