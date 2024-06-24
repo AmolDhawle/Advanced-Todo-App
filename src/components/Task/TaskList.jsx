@@ -23,7 +23,7 @@ const TaskList = ({ openModal }) => {
 
 
   return (
-    <div className="p-4">
+    <div className="mt-16 p-4">
       {sortedTasks.map(task => (
         <TaskItem
           key={task.id}

@@ -74,13 +74,13 @@ const AddTaskModal = ({ isOpen, closeModal, addTask, task }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-orange-400 hover:bg-orange-600 text-white p-2 rounded"
           >
             {task ? 'Update Task' : 'Add Task'}
           </button>
         </form>
         <button
-          className="w-full bg-gray-500 text-white p-2 rounded mt-2"
+          className="w-full bg-gray-500 hover:bg-red-600 text-white p-2 rounded mt-2"
           onClick={closeModal}
         >
           Cancel

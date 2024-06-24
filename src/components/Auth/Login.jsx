@@ -18,8 +18,8 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <form className="bg-slate-300 p-6 rounded shadow-md" onSubmit={handleSubmit}>
-        <h2 className="mb-4 text-xl">Login</h2>
+      <form className="p-6 rounded shadow-md shadow-slate-950 bg-slate-100" onSubmit={handleSubmit}>
+        <h2 className="mb-4 text-xl font-bold text-center">Login</h2>
         <div className="mb-4">
           <label className="block mb-1">Username</label>
           <input
@@ -42,7 +42,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-800 hover:uppercase"
         >
           Login
         </button>
