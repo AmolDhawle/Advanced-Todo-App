@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Layout/Navbar';
 import AddTaskModal from '../components/Layout/AddTaskModal';
+import { addTask } from '../redux/slices/tasks/taskSlice';
+import { useDispatch } from 'react-redux';
 
 
 const TodoPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
+  const dispatch = useDispatch();
 
   const openModal = (task = null) => {
     setCurrentTask(task);
@@ -18,8 +21,9 @@ const TodoPage = () => {
   };
 
   const handleAddTask = (task) => {
-    
+      dispatch(addTask(task));
   };
+
 
   return (
     <div>
