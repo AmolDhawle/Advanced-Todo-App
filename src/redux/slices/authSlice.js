@@ -1,4 +1,3 @@
-// src/redux/slices/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 // Helper functions to load and save auth state from/to local storage
