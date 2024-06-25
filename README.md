@@ -6,7 +6,7 @@ This project is a simple to-do application built with React, Redux, and Tailwind
 
 - User authentication
 - Add, edit, delete tasks
-- Mark tasks as complete with a checkbox
+- Mark tasks as complete 
 - Weather information for task locations
 - Responsive design
 
