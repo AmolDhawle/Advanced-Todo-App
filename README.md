@@ -17,7 +17,7 @@ To set up and run this project locally, follow these steps:
 1. **Clone the repository:**
    ```sh
    git clone https://https://github.com/AmolDhawle/Advanced-Todo-App.git
-   cd your-repo-name
+   cd Advanced-Todo-App.git
 
 2. **Install dependencies:**
     ```sh
