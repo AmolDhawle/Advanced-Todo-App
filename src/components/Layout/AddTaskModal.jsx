@@ -5,39 +5,37 @@ const AddTaskModal = ({ isOpen, closeModal, addTask, task }) => {
   const [priority, setPriority] = useState('low');
   const [location, setLocation] = useState('');
 
-  // This effect runs whenever the `task` prop changes.
+  // This effect runs whenever the `task` prop or `isOpen` changes.
   useEffect(() => {
-    if (task) {
+    if (isOpen && task) {
       setTaskName(task.taskName || '');
       setPriority(task.priority || 'low');
       setLocation(task.location || '');
-    } else {
+    } else if (isOpen && !task) {
       setTaskName('');
       setPriority('low');
       setLocation('');
     }
-  }, [task]);
+  }, [task, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create an updatedTask object based on the current state values
     const updatedTask = {
-      id: task ? task.id : Date.now(), // Use the existing task id or generate a new one
-      taskName: taskName,  // Use the current task name
-      priority: priority,  // Use the current task priority
-      location: location   // Use the current task location
+      id: task ? task.id : Date.now(),
+      taskName,
+      priority,
+      location,
     };
 
     addTask(updatedTask);
-    closeModal();
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded shadow-md w-1/3">
+      <div className="bg-white p-6 rounded shadow-md w-full sm:w-1/3">
         <h2 className="text-xl mb-4">{task ? 'Edit Task' : 'Add Task'}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -91,3 +89,4 @@ const AddTaskModal = ({ isOpen, closeModal, addTask, task }) => {
 };
 
 export default AddTaskModal;
+
