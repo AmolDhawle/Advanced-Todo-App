@@ -38,7 +38,7 @@ const TaskItem = ({ task, openModal, handleDelete }) => {
           className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
           onClick={handleToggleCompletion}
         >
-          {task.completed ? 'Mark Incomplete' : 'Mark Complete'}
+          {task.completed ? 'Done' : 'Undone'}
         </button>
       </div>
     </div>
