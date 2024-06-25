@@ -48,9 +48,16 @@ const taskSlice = createSlice({
       deleteTask: (state, action) => {
         state.tasks = state.tasks.filter(task => task.id !== action.payload);
         saveTasksToLocalStorage(state.tasks);
-      }
+      },
+      toggleTaskCompletion: (state, action) => {
+        const index = state.tasks.findIndex(task => task.id === action.payload);
+        if (index !== -1) {
+          state.tasks[index].completed = !state.tasks[index].completed;
+          saveTasksToLocalStorage(state.tasks);
+        }
+      },
   }
 });
 
-export const { addTask, editTask, deleteTask } = taskSlice.actions;
+export const { addTask, editTask, deleteTask, toggleTaskCompletion } = taskSlice.actions;
 export default taskSlice.reducer;
