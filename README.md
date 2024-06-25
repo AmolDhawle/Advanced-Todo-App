@@ -16,7 +16,7 @@ To set up and run this project locally, follow these steps:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://https://github.com/AmolDhawle/Advanced-Todo-App.git
+   git clone https://github.com/AmolDhawle/Advanced-Todo-App.git
    cd Advanced-Todo-App.git
 
 2. **Install dependencies:**
@@ -25,4 +25,4 @@ To set up and run this project locally, follow these steps:
 
 3. **Start the development server:**
     ```sh
-    npm start
+    npm run dev
